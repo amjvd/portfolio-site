@@ -148,3 +148,134 @@ table {
 .title {
   text-wrap: balance;
 }
+/* === Desktop look (home) === */
+.desktop {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.desktop-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 110px); /* 2 columns on mobile */
+  gap: 18px;
+  padding: 24px;
+}
+
+@media (min-width: 640px) {
+  .desktop-grid { grid-template-columns: repeat(3, 110px); }
+}
+@media (min-width: 1024px) {
+  .desktop-grid { grid-template-columns: repeat(4, 110px); }
+}
+
+.icon {
+  width: 110px;
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+  user-select: none;
+}
+.icon img {
+  width: 64px;
+  height: 64px;
+  display: block;
+  margin: 0 auto 6px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.5));
+}
+.icon:hover {
+  transform: translateY(-2px);
+  transition: transform 120ms ease;
+}
+.icon-label {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0,0,0,.35);
+  line-height: 1.2;
+  font-size: 14px;
+}
+
+.taskbar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 48px;
+  background: rgba(0, 78, 152, 0.9); /* XP-ish blue */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+.taskbar a { color: #fff; }
+.taskbar-spacer { flex: 1; }
+
+/* Full-screen background layer for the desktop */
+.wallpaper {
+  position: fixed;
+  inset: 0;                       /* top:0 right:0 bottom:0 left:0 */
+  background: url(/wallpapers/xp-bliss.jpg) center / cover no-repeat;
+  z-index: -1;                    /* sit behind all content */
+}
+/* ===== Overlayed window (XP-ish) ===== */
+.window-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.25);
+  z-index: 50; /* above wallpaper/icons/taskbar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.window {
+  width: min(860px, 96vw);
+  background: #f3f3f3;
+  border: 1px solid #b5b5b5;
+  border-radius: 6px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.35);
+  overflow: hidden;
+}
+
+.titlebar {
+  height: 36px;
+  background: linear-gradient(#3b6ea5, #2b5690);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.titlebar-title {
+  font-weight: 600;
+}
+
+.close-btn {
+  width: 28px;
+  height: 28px;
+  line-height: 26px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 4px;
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  cursor: pointer;
+}
+.close-btn:hover { background: rgba(255,255,255,.25); }
+
+.window-body {
+  padding: 16px;
+  background: #e9edf3;
+}
+
+.files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 110px);
+  gap: 18px;
+}
+
+/* Reuse your .icon styles for tiles inside the window */
