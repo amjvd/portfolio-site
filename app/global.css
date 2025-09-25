@@ -278,4 +278,9 @@ table {
   gap: 18px;
 }
 
-/* Reuse your .icon styles for tiles inside the window */
+/* Windows are positioned with left/top for dragging */
+.window { position: fixed; }
+
+/* Visual cue for dragging */
+.titlebar { cursor: move; user-select: none; }
+.window-body { overflow: auto; }  

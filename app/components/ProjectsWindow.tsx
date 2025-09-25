@@ -1,58 +1,115 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import SudokuDemo from "./SudokuDemo";      
+import CalculatorDemo from "./CalculatorDemo";
+import SortingDemo from "./SortingDemo";
 
-type Props = {
+type ProjectKey = "sudoku" | "calculator" | "sorting" | null;
+
+export default function ProjectsWindow({
+  open,
+  onClose,
+}: {
   open: boolean;
   onClose: () => void;
-};
+}) {
+  const [pos, setPos] = useState<{ x: number; y: number }>({ x: 80, y: 80 });
+  const [selected, setSelected] = useState<ProjectKey>(null);
+  const drag = useRef({ dragging: false, sx: 0, sy: 0, ox: 0, oy: 0 });
 
-export default function ProjectsWindow({ open, onClose }: Props) {
-  const winRef = useRef<HTMLDivElement | null>(null);
-
-  // Close on ESC
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", esc);
+    return () => window.removeEventListener("keydown", esc);
   }, [open, onClose]);
 
-  if (!open) return null;
+  function down(e: React.MouseEvent) {
+    drag.current = { dragging: true, sx: e.clientX, sy: e.clientY, ox: pos.x, oy: pos.y };
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+  }
+  function move(e: MouseEvent) {
+    if (!drag.current.dragging) return;
+    setPos({
+      x: drag.current.ox + (e.clientX - drag.current.sx),
+      y: drag.current.oy + (e.clientY - drag.current.sy),
+    });
+  }
+  function up() {
+    drag.current.dragging = false;
+    window.removeEventListener("mousemove", move);
+    window.removeEventListener("mouseup", up);
+  }
 
+  if (!open) return null;
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
-    <div
-      className="window-overlay"
-      role="dialog"
-      aria-modal="true"
-      onClick={onClose}
-    >
-      <div className="window" onClick={stop} ref={winRef}>
-        <div className="titlebar">
-          <div className="titlebar-title">Projects</div>
-          <button
-            className="close-btn"
-            aria-label="Close"
-            onClick={onClose}
-            title="Close"
-          >
-            ✕
-          </button>
+    <div className="window-overlay" onClick={onClose} role="dialog" aria-modal="true">
+      <div
+        className="window"
+        onClick={stop}
+        style={{ left: pos.x, top: pos.y, width: "min(900px, 96vw)" }}
+      >
+        <div className="titlebar" onMouseDown={down}>
+          <div className="titlebar-title">
+            {selected === null ? "Projects" : 
+              selected === "sudoku" ? "Sudoku Solver" :
+              selected === "calculator" ? "Calculator" :
+              "Sorting Visualizer"}
+          </div>
+          <div style={{ display: "flex", gap: 8 }}>
+            {selected && (
+              <button className="icon-label" onClick={() => setSelected(null)}>
+                ← Back
+              </button>
+            )}
+            <button className="close-btn" onClick={onClose} aria-label="Close">
+              ✕
+            </button>
+          </div>
         </div>
 
-        <div className="window-body">
-                <div className="files-grid">
-        <a href="/projects/sudoku-solver" className="icon" title="Sudoku Solver">
-            <img src="/projects/sudoku.png" alt="Sudoku Solver icon" />
-            <span className="icon-label">Sudoku Solver</span>
-        </a>
-        </div>
+        <div className="window-body" style={{ maxHeight: "70vh", overflow: "auto" }}>
+          {selected === null && (
+            <div className="files-grid">
+              {/* Sudoku */}
+              <button
+                className="icon"
+                onClick={() => setSelected("sudoku")}
+                style={{ background: "transparent", border: 0, cursor: "pointer", padding: 0 }}
+              >
+                <img src="/icons/sudoku.jpg" alt="Sudoku Solver" />
+                <span className="icon-label">Sudoku Solver</span>
+              </button>
 
+              {/* Calculator */}
+              <button
+                className="icon"
+                onClick={() => setSelected("calculator")}
+                style={{ background: "transparent", border: 0, cursor: "pointer", padding: 0 }}
+              >
+                <img src="/icons/calculator.png" alt="Calculator" />
+                <span className="icon-label">Calculator</span>
+              </button>
+
+              {/* Sorting Visualizer */}
+              <button
+                className="icon"
+                onClick={() => setSelected("sorting")}
+                style={{ background: "transparent", border: 0, cursor: "pointer", padding: 0 }}
+              >
+                <img src="/icons/sort.png" alt="Sorting Visualizer" />
+                <span className="icon-label">Sorting Visualizer</span>
+              </button>
+            </div>
+          )}
+
+          {selected === "sudoku" && <SudokuDemo />}
+          {selected === "calculator" && <CalculatorDemo />}
+          {selected === "sorting" && <SortingDemo />}
         </div>
       </div>
     </div>
