@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import SudokuDemo from "./SudokuDemo";      
+import SudokuDemo from "./SudokuDemo";
 import CalculatorDemo from "./CalculatorDemo";
 import SortingDemo from "./SortingDemo";
 
@@ -17,7 +17,17 @@ export default function ProjectsWindow({
   const [pos, setPos] = useState<{ x: number; y: number }>({ x: 80, y: 80 });
   const [selected, setSelected] = useState<ProjectKey>(null);
   const drag = useRef({ dragging: false, sx: 0, sy: 0, ox: 0, oy: 0 });
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Detect mobile
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // ESC closes
   useEffect(() => {
     if (!open) return;
     const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -26,6 +36,7 @@ export default function ProjectsWindow({
   }, [open, onClose]);
 
   function down(e: React.MouseEvent) {
+    if (isMobile) return; // disable dragging on mobile
     drag.current = { dragging: true, sx: e.clientX, sy: e.clientY, ox: pos.x, oy: pos.y };
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseup", up);
@@ -46,19 +57,34 @@ export default function ProjectsWindow({
   if (!open) return null;
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
+  // Match BlogWindow behavior exactly:
+  // - Mobile: fullscreen
+  // - Desktop + icon view: auto height (no whitespace)
+  // - Desktop + project open: fixed height with scroll
+  const windowStyle: React.CSSProperties = isMobile
+    ? { left: 0, top: 0, width: "100vw", height: "100vh", borderRadius: 0 }
+    : selected
+    ? { left: pos.x, top: pos.y, width: "min(900px, 96vw)", height: "min(80vh, 900px)" }
+    : { left: pos.x, top: pos.y, width: "min(900px, 96vw)", height: "auto" };
+
+  const bodyStyle: React.CSSProperties = isMobile
+    ? { maxHeight: "calc(100vh - 36px)", overflow: "auto" }
+    : selected
+    ? { maxHeight: "70vh", overflow: "auto" }   // project open -> scroll
+    : { maxHeight: "none", overflow: "visible" }; // icon grid -> shrink to fit
+
   return (
     <div className="window-overlay" onClick={onClose} role="dialog" aria-modal="true">
-      <div
-        className="window"
-        onClick={stop}
-        style={{ left: pos.x, top: pos.y, width: "min(900px, 96vw)" }}
-      >
+      <div className="window" onClick={stop} style={windowStyle}>
         <div className="titlebar" onMouseDown={down}>
           <div className="titlebar-title">
-            {selected === null ? "Projects" : 
-              selected === "sudoku" ? "Sudoku Solver" :
-              selected === "calculator" ? "Calculator" :
-              "Sorting Visualizer"}
+            {selected === null
+              ? "Projects"
+              : selected === "sudoku"
+              ? "Sudoku Solver"
+              : selected === "calculator"
+              ? "Calculator"
+              : "Sorting Visualizer"}
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             {selected && (
@@ -72,10 +98,9 @@ export default function ProjectsWindow({
           </div>
         </div>
 
-        <div className="window-body" style={{ maxHeight: "70vh", overflow: "auto" }}>
-          {selected === null && (
+        <div className="window-body" style={bodyStyle}>
+          {selected === null ? (
             <div className="files-grid">
-              {/* Sudoku */}
               <button
                 className="icon"
                 onClick={() => setSelected("sudoku")}
@@ -85,7 +110,6 @@ export default function ProjectsWindow({
                 <span className="icon-label">Sudoku Solver</span>
               </button>
 
-              {/* Calculator */}
               <button
                 className="icon"
                 onClick={() => setSelected("calculator")}
@@ -95,7 +119,6 @@ export default function ProjectsWindow({
                 <span className="icon-label">Calculator</span>
               </button>
 
-              {/* Sorting Visualizer */}
               <button
                 className="icon"
                 onClick={() => setSelected("sorting")}
@@ -105,11 +128,13 @@ export default function ProjectsWindow({
                 <span className="icon-label">Sorting Visualizer</span>
               </button>
             </div>
+          ) : selected === "sudoku" ? (
+            <SudokuDemo />
+          ) : selected === "calculator" ? (
+            <CalculatorDemo />
+          ) : (
+            <SortingDemo />
           )}
-
-          {selected === "sudoku" && <SudokuDemo />}
-          {selected === "calculator" && <CalculatorDemo />}
-          {selected === "sorting" && <SortingDemo />}
         </div>
       </div>
     </div>

@@ -71,7 +71,6 @@ const POSTS: Post[] = [
     content: (
       <div style={{ display: "grid", gap: 12 }}>
         <p>
-        <p>
           At first glance, the iOS timer picker feels like it scrolls forever. Minutes and
           hours spin past in a smooth wheel, almost like an endless list. Many people
           assumed it was looping rows under the hood.
@@ -82,23 +81,22 @@ const POSTS: Post[] = [
           long finite list.
         </p>
         <div style={{ textAlign: "center" }}>
-        <img
-          src="/icons/timeend.png"
-          alt="iOS timer picker reaching the end"
-          style={{
-            display: "block",
-            margin: "12px auto",
-            borderRadius: 8,
-            maxWidth: "100%"
-          }}
-        />
-
-        <p style={{ fontSize: 14, color: "#94a3b8" }}>
-          Screenshot of the timer picker eventually reaching its limit
-        </p>
-      </div>
+          <img
+            src="/icons/timeend.png"
+            alt="iOS timer picker reaching the end"
+            style={{
+              display: "block",
+              margin: "12px auto",
+              borderRadius: 8,
+              maxWidth: "100%",
+            }}
+          />
+          <p style={{ fontSize: 14, color: "#94a3b8" }}>
+            Screenshot of the timer picker eventually reaching its limit
+          </p>
+        </div>
         <ul>
-          <li>The design creates the <b>illusion of infinity</b>, even though a limit exists.</li>
+          <li>The design creates the illusion of infinity, even though a limit exists.</li>
           <li>It’s simpler to implement than recycling rows in a true loop.</li>
           <li>For everyday use, most people never scroll far enough to notice the end.</li>
         </ul>
@@ -106,8 +104,6 @@ const POSTS: Post[] = [
           It’s a neat example of Apple’s approach: use a straightforward solution that
           feels seamless in practice. To the user it looks infinite, but under the hood
           it’s just a carefully designed long list with boundaries.
-        </p>
-
         </p>
         <div style={{ position: "relative", paddingTop: "56.25%", borderRadius: 8, overflow: "hidden" }}>
           <iframe
@@ -129,46 +125,44 @@ const POSTS: Post[] = [
     content: (
       <div style={{ display: "grid", gap: 12 }}>
         <p>
+          Sorting is one of the most fundamental problems in computer science. There are
+          tons of algorithms, but here are the four classics: <b>Bubble</b>, <b>Insertion</b>,
+          <b>Merge</b>, and <b>Quick</b>.
+        </p>
 
-        Sorting is one of the most fundamental problems in computer science. There are
-        tons of algorithms, but here are the four classics: <b>Bubble</b>, <b>Insertion</b>,
-        <b> Merge</b>, and <b>Quick</b>.
-      </p>
+        <h3>Bubble Sort:</h3>
+        <ul>
+          <li>Swap neighbors until the list is sorted.</li>
+          <li>Very easy to understand and visualize.</li>
+          <li>Slow in practice: <code>O(n²)</code> on average.</li>
+        </ul>
 
-      <h3>Bubble Sort:</h3>
-      <ul>
-        <li>Swap neighbors until the list is sorted.</li>
-        <li>Very easy to understand and visualize.</li>
-        <li>Slow in practice: <code>O(n²)</code> on average.</li>
-      </ul>
+        <h3>Insertion Sort:</h3>
+        <ul>
+          <li>Builds a sorted list one element at a time.</li>
+          <li>Excellent for small or nearly sorted inputs.</li>
+          <li>Worst case still <code>O(n²)</code>.</li>
+        </ul>
 
-      <h3>Insertion Sort:</h3>
-      <ul>
-        <li>Builds a sorted list one element at a time.</li>
-        <li>Excellent for small or nearly sorted inputs.</li>
-        <li>Worst case still <code>O(n²)</code>.</li>
-      </ul>
+        <h3>Merge Sort:</h3>
+        <ul>
+          <li>Divide the list, sort each half, then merge.</li>
+          <li>Predictable performance: always <code>O(n log n)</code>.</li>
+          <li>Stable, but needs extra memory for merging.</li>
+        </ul>
 
-      <h3>Merge Sort:</h3>
-      <ul>
-        <li>Divide the list, sort each half, then merge.</li>
-        <li>Predictable performance: always <code>O(n log n)</code>.</li>
-        <li>Stable, but needs extra memory for merging.</li>
-      </ul>
+        <h3>Quick Sort:</h3>
+        <ul>
+          <li>Pick a pivot, partition the list, then recurse.</li>
+          <li>Usually the fastest in practice thanks to cache-friendliness.</li>
+          <li>Average <code>O(n log n)</code>, but worst case <code>O(n²)</code>.</li>
+        </ul>
 
-      <h3>Quick Sort:</h3>
-      <ul>
-        <li>Pick a pivot, partition the list, then recurse.</li>
-        <li>Usually the fastest in practice thanks to cache-friendliness.</li>
-        <li>Average <code>O(n log n)</code>, but worst case <code>O(n²)</code>.</li>
-      </ul>
-
-      <p>
-        In short: <b>Bubble</b> is for teaching, <b>Insertion</b> is for tiny or nearly
-        sorted lists, <b>Merge</b> guarantees performance, and <b>Quick</b> is the
-        practical all-rounder.
-      </p>
-
+        <p>
+          In short: <b>Bubble</b> is for teaching, <b>Insertion</b> is for tiny or nearly
+          sorted lists, <b>Merge</b> guarantees performance, and <b>Quick</b> is the
+          practical all-rounder.
+        </p>
         <div style={{ position: "relative", paddingTop: "56.25%", borderRadius: 8, overflow: "hidden" }}>
           <iframe
             src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
@@ -193,6 +187,14 @@ export default function BlogWindow({
   const [pos, setPos] = useState<{ x: number; y: number }>({ x: 160, y: 140 });
   const [selected, setSelected] = useState<Post | null>(null);
   const drag = useRef({ dragging: false, sx: 0, sy: 0, ox: 0, oy: 0 });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -202,6 +204,7 @@ export default function BlogWindow({
   }, [open, onClose]);
 
   function down(e: React.MouseEvent) {
+    if (isMobile) return; // disable drag on mobile
     drag.current = { dragging: true, sx: e.clientX, sy: e.clientY, ox: pos.x, oy: pos.y };
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseup", up);
@@ -219,9 +222,15 @@ export default function BlogWindow({
   if (!open) return null;
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
+  const windowStyle: React.CSSProperties = isMobile
+    ? { left: 0, top: 0, width: "100vw", height: "100vh" }
+    : selected
+    ? { left: pos.x, top: pos.y, width: "min(940px, 96vw)", height: "min(80vh, 900px)" }
+    : { left: pos.x, top: pos.y, width: "min(600px, 90vw)", height: "auto" };
+
   return (
     <div className="window-overlay" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="window" onClick={stop} style={{ left: pos.x, top: pos.y, width: "min(940px, 96vw)" }}>
+      <div className="window" onClick={stop} style={windowStyle}>
         <div className="titlebar" onMouseDown={down}>
           <div className="titlebar-title">{selected ? selected.title : "Blog"}</div>
           <div style={{ display: "flex", gap: 8 }}>
@@ -232,7 +241,13 @@ export default function BlogWindow({
           </div>
         </div>
 
-        <div className="window-body" style={{ maxHeight: "70vh", overflow: "auto" }}>
+        <div
+          className="window-body"
+          style={{
+            maxHeight: isMobile ? "calc(100vh - 36px)" : "70vh",
+            overflow: "auto",
+          }}
+        >
           {!selected ? (
             <div className="files-grid">
               {POSTS.map((p) => (
