@@ -53,7 +53,7 @@ const POSTS: Post[] = [
         </p>
         <div style={{ position: "relative", paddingTop: "56.25%", borderRadius: 8, overflow: "hidden" }}>
           <iframe
-            src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+            src="https://www.youtube.com/embed/nmKCSF4h6k0"
             title="Sudoku Solver Walkthrough"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen

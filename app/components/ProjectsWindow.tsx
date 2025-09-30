@@ -17,17 +17,9 @@ export default function ProjectsWindow({
   const [pos, setPos] = useState<{ x: number; y: number }>({ x: 80, y: 80 });
   const [selected, setSelected] = useState<ProjectKey>(null);
   const drag = useRef({ dragging: false, sx: 0, sy: 0, ox: 0, oy: 0 });
-  const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
-  // ESC closes
   useEffect(() => {
     if (!open) return;
     const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -57,28 +49,23 @@ export default function ProjectsWindow({
   if (!open) return null;
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
-  // Match BlogWindow behavior exactly:
-  // - Mobile: fullscreen
-  // - Desktop + icon view: auto height (no whitespace)
-  // - Desktop + project open: fixed height with scroll
-  const windowStyle: React.CSSProperties = isMobile
-    ? { left: 0, top: 0, width: "100vw", height: "100vh", borderRadius: 0 }
-    : selected
-    ? { left: pos.x, top: pos.y, width: "min(900px, 96vw)", height: "min(80vh, 900px)" }
-    : { left: pos.x, top: pos.y, width: "min(900px, 96vw)", height: "auto" };
-
-  const bodyStyle: React.CSSProperties = isMobile
-    ? { maxHeight: "calc(100vh - 36px)", overflow: "auto" }
-    : selected
-    ? { maxHeight: "70vh", overflow: "auto" }   // project open -> scroll
-    : { maxHeight: "none", overflow: "visible" }; // icon grid -> shrink to fit
+  // Detect whether we're showing icons or a demo
+  const isGridView = selected === null;
 
   return (
     <div className="window-overlay" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="window" onClick={stop} style={windowStyle}>
+      <div
+        className="window"
+        onClick={stop}
+        style={
+          isMobile
+            ? { top: 0, left: 0, width: "100%", height: "100%", borderRadius: 0 }
+            : { left: pos.x, top: pos.y, width: "min(900px, 96vw)" }
+        }
+      >
         <div className="titlebar" onMouseDown={down}>
           <div className="titlebar-title">
-            {selected === null
+            {isGridView
               ? "Projects"
               : selected === "sudoku"
               ? "Sudoku Solver"
@@ -98,9 +85,13 @@ export default function ProjectsWindow({
           </div>
         </div>
 
-        <div className="window-body" style={bodyStyle}>
-          {selected === null ? (
+        <div
+          className={`window-body ${isGridView ? "icon-grid" : ""}`}
+          style={isGridView ? { padding: 16 } : { maxHeight: "70vh", overflow: "auto" }}
+        >
+          {isGridView && (
             <div className="files-grid">
+              {/* Sudoku */}
               <button
                 className="icon"
                 onClick={() => setSelected("sudoku")}
@@ -110,6 +101,7 @@ export default function ProjectsWindow({
                 <span className="icon-label">Sudoku Solver</span>
               </button>
 
+              {/* Calculator */}
               <button
                 className="icon"
                 onClick={() => setSelected("calculator")}
@@ -119,6 +111,7 @@ export default function ProjectsWindow({
                 <span className="icon-label">Calculator</span>
               </button>
 
+              {/* Sorting Visualizer */}
               <button
                 className="icon"
                 onClick={() => setSelected("sorting")}
@@ -128,13 +121,11 @@ export default function ProjectsWindow({
                 <span className="icon-label">Sorting Visualizer</span>
               </button>
             </div>
-          ) : selected === "sudoku" ? (
-            <SudokuDemo />
-          ) : selected === "calculator" ? (
-            <CalculatorDemo />
-          ) : (
-            <SortingDemo />
           )}
+
+          {selected === "sudoku" && <SudokuDemo />}
+          {selected === "calculator" && <CalculatorDemo />}
+          {selected === "sorting" && <SortingDemo />}
         </div>
       </div>
     </div>
