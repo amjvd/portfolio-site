@@ -25,7 +25,7 @@ It’s designed to showcase my projects, blogs, and CV in a fun, interactive way
 
 ---
 
-## Eunning it locally:
+## Running it locally:
 
 Clone the repo and install dependencies:
 
@@ -36,4 +36,4 @@ npm install
 
 npm run dev
 ```
-will run site at **http://localhost:3000**
+Will run site at **http://localhost:3000**
