@@ -36,4 +36,4 @@ npm install
 
 npm run dev
 ```
-will run site at 
+will run site at **http://localhost:3000**
