@@ -13,7 +13,7 @@ export default function AboutWindow({
   const drag = useRef({ dragging: false, sx: 0, sy: 0, ox: 0, oy: 0 });
   const [isMobile, setIsMobile] = useState(false);
 
-  // Check if screen is mobile
+
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
@@ -21,7 +21,6 @@ export default function AboutWindow({
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // ESC key closes
   useEffect(() => {
     if (!open) return;
     const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();

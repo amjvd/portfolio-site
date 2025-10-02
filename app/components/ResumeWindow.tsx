@@ -13,7 +13,6 @@ export default function ResumeWindow({
   const drag = useRef({ dragging: false, sx: 0, sy: 0, ox: 0, oy: 0 });
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
@@ -21,7 +20,6 @@ export default function ResumeWindow({
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // ESC to close
   useEffect(() => {
     if (!open) return;
     const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();

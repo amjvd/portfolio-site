@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 
-/* === General === */
 ::selection {
   background-color: #47a3f3;
   color: #fefefe;
@@ -10,7 +9,6 @@ html {
   min-width: 360px;
 }
 
-/* === Desktop look (home) === */
 .desktop {
   min-height: 100vh;
   background-size: cover;
@@ -59,12 +57,11 @@ html {
   font-size: 14px;
 }
 
-/* === Taskbar === */
 .taskbar {
   position: fixed;
   left: 0; right: 0; bottom: 0;
   height: 48px;
-  background: rgba(0, 78, 152, 0.9); /* XP blue */
+  background: rgba(0, 78, 152, 0.9); 
   display: flex;
   align-items: center;
   gap: 12px;
@@ -75,7 +72,6 @@ html {
 .taskbar a { color: #fff; }
 .taskbar-spacer { flex: 1; }
 
-/* === Full-screen wallpaper === */
 .wallpaper {
   position: fixed;
   inset: 0;
@@ -83,7 +79,6 @@ html {
   z-index: -1;
 }
 
-/* === Windows === */
 .window-overlay {
   position: fixed;
   inset: 0;
@@ -104,12 +99,10 @@ html {
   overflow: hidden;
 }
 
-/* Shrink windows that should auto-size (like Blog/Projects grid) */
 .window[style*="height: auto"] {
   min-height: 0 !important;
 }
 
-/* Titlebar */
 .titlebar {
   height: 36px;
   background: linear-gradient(#3b6ea5, #2b5690);
@@ -136,19 +129,16 @@ html {
 }
 .close-btn:hover { background: rgba(255,255,255,.25); }
 
-/* Window body */
 .window-body {
   padding: 16px;
   background: #e9edf3;
   overflow: auto;
 }
 
-/* Remove extra space for grid-only windows */
 .window-body.icon-grid {
   padding: 12px;
 }
 
-/* Files grid (icons inside Blog/Projects) */
 .files-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, 110px);

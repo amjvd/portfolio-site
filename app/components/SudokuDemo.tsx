@@ -2,14 +2,13 @@
 
 import { useMemo, useState } from "react";
 
-type Cell = string; // "1".."9" or "." (empty)
-type Board = Cell[][]; // 9x9
+type Cell = string; 
+type Board = Cell[][]; 
 
 const emptyBoard: Board = Array.from({ length: 9 }, () =>
   Array.from({ length: 9 }, () => ".")
 );
 
-// classic example; you can change this
 const EXAMPLE: Board = [
   ["5",".",".",".","7",".",".",".","."],
   ["6",".",".","1","9","5",".",".","."],
@@ -34,7 +33,6 @@ export default function SudokuDemo() {
   const cols = useMemo(() => Array.from({ length: 9 }, () => new Set<string>()), []);
   const boxes = useMemo(() => Array.from({ length: 9 }, () => new Set<string>()), []);
 
-  // initialize sets from current board
   function hydrateSets(b: Board) {
     rows.forEach(s => s.clear());
     cols.forEach(s => s.clear());
@@ -53,7 +51,6 @@ export default function SudokuDemo() {
   }
 
   function solve(current: Board): boolean {
-    // collect empties
     const empties: Array<[number, number]> = [];
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
@@ -61,7 +58,6 @@ export default function SudokuDemo() {
       }
     }
 
-    // your exact backtracking pattern
     function backtrack(index: number): boolean {
       if (index === empties.length) return true;
       const [i, j] = empties[index];
@@ -108,7 +104,6 @@ export default function SudokuDemo() {
   }
 
   function setCell(i: number, j: number, val: string) {
-    // allow only 1..9; empty becomes "."
     const v = val.replace(/[^1-9]/g, "").slice(0, 1);
     const next = clone(board);
     next[i][j] = v === "" ? "." : v;

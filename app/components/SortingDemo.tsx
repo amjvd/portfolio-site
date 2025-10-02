@@ -11,7 +11,7 @@ function randomArray(n = 40) {
 export default function SortingDemo() {
   const [arr, setArr] = useState<number[]>(randomArray());
   const [algo, setAlgo] = useState<Algo>("bubble");
-  const [speed, setSpeed] = useState<number>(60); // 1..100 (higher = faster)
+  const [speed, setSpeed] = useState<number>(60);
   const [running, setRunning] = useState(false);
   const highlight = useRef<{ i: number; j: number }>({ i: -1, j: -1 });
 
@@ -24,10 +24,9 @@ export default function SortingDemo() {
   }
 
   function delayFromSpeed(s: number) {
-    return 110 - s; // higher slider = faster
+    return 110 - s; 
   }
 
-  // Bubble Sort
   async function runBubble() {
     setRunning(true);
     const a = arr.slice();
@@ -47,7 +46,6 @@ export default function SortingDemo() {
     setRunning(false);
   }
 
-  // Insertion Sort
   async function runInsertion() {
     setRunning(true);
     const a = arr.slice();
@@ -69,7 +67,7 @@ export default function SortingDemo() {
     setRunning(false);
   }
 
-  // Merge Sort (with visualization)
+
   async function runMergeSort() {
     setRunning(true);
     const a = arr.slice();
@@ -113,7 +111,7 @@ export default function SortingDemo() {
     setRunning(false);
   }
 
-  // Quick Sort (with visualization)
+
   async function runQuickSort() {
     setRunning(true);
     const a = arr.slice();

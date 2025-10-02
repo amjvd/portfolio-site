@@ -28,7 +28,7 @@ export default function ProjectsWindow({
   }, [open, onClose]);
 
   function down(e: React.MouseEvent) {
-    if (isMobile) return; // disable dragging on mobile
+    if (isMobile) return; 
     drag.current = { dragging: true, sx: e.clientX, sy: e.clientY, ox: pos.x, oy: pos.y };
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseup", up);
@@ -49,7 +49,6 @@ export default function ProjectsWindow({
   if (!open) return null;
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
-  // Detect whether we're showing icons or a demo
   const isGridView = selected === null;
 
   return (

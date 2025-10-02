@@ -15,9 +15,7 @@ function safeEval(expr: string): string {
   // allow digits, ops, dot, parentheses, spaces, percent
   if (/^[0-9+\-*/(). % ]+$/.test(expr) === false) return "ERR";
   try {
-    // convert percent like 50% -> (50/100)
     const normalized = expr.replace(/(\d+(\.\d+)?)%/g, "($1/100)");
-    // eslint-disable-next-line no-new-func
     const val = Function(`"use strict"; return (${normalized});`)();
     if (Number.isFinite(val)) return String(val);
     return "ERR";
