@@ -76,11 +76,11 @@ export default function AboutWindow({
             <p style={{ margin: 0, color: "#334155" }}>
               Hi, I’m Amjad, an up and coming engineer. I love learning new things,
               building small tools and solvers, and sharing what I discover. This site
-              is a playful Windows-XP style desktop for my projects — click around!
+              is a playful Windows-XP style desktop for my projects, click around!
             </p>
 
             <ul style={{ margin: 0, paddingLeft: 18, color: "#334155" }}>
-              <li>Interests: algorithms, web apps, systems</li>
+              <li>Interests: Algorithms, Web apps, Systems</li>
               <li>Stack: Python, TypeScript/JavaScript, Next.js</li>
               <li>Currently: refining projects & posting write ups</li>
             </ul>
