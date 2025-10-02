@@ -3,7 +3,7 @@
 This is my personal portfolio site, built with **Next.js** and styled with inspiration from **Windows XP desktop theme**.  
 It’s designed to showcase my projects, blogs, and CV in a fun, interactive way, with draggable windows, icons, and a taskbar.
 
-🌐 Live site: [amjadhamed.com](https://amjadhamed.com)
+Live site: [amjadhamed.com](https://amjadhamed.com)
 
 ---
 
