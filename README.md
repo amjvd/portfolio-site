@@ -8,15 +8,15 @@ Live site: [amjadhamed.com](https://amjadhamed.com)
 ---
 
 ## Features:
-- **XP-style UI** — draggable windows, desktop icons, wallpaper & taskbar.
+- **XP-style UI:** draggable windows, desktop icons, wallpaper & taskbar.
 - **Projects**  interactive demos like:
   - Sudoku Solver (backtracking algorithm)
   - Calculator
   - Sorting Visualizer (Bubble, Insertion, Merge, Quick)
-- **Blog** — indepth writeups for each project and other explorations.
-- **About Me** — quick intro and links to GitHub/LinkedIn.
-- **CV Viewer** — inline PDF with open/download options.
-- **Responsive** — works on desktop & mobile (full-screen windows for mobile). Design for PC.
+- **Blog:**  indepth writeups for each project and other explorations.
+- **About Me:**  quick intro and links to GitHub/LinkedIn.
+- **CV Viewer:**  inline PDF with open/download options.
+- **Responsive:**  works on desktop & mobile (full-screen windows for mobile). Design for PC.
 - **Tech Stack**:
   - Next.js
   - React
